@@ -9,7 +9,7 @@ body{
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-image: url(assets/fondo.png);
+    background-image: url(../img/fondo.png);
     background-repeat: no-repeat;
     background-size: cover;
 }
