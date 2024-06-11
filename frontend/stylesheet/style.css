@@ -42,6 +42,9 @@ body{
 
 .contenedor .boton{
     background-color:  rgb(6, 113, 206);
+    height: 30px;
+    border-radius: 50px;
+    color: white;
 }
 
 .contenedor p{
@@ -64,6 +67,5 @@ body{
     display: flex;
     flex-direction: column;
 }
-
 
 

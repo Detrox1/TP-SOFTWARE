@@ -9,12 +9,50 @@
 <body>  
     <div class="contenedor">
         <img src="../img/titulo2.png">
-        <form>
-            <input type="text" placeholder="usuario" required>
-            <input type="password" placeholder="contraseña" required>
-            <input type="button" value="enviar" class="boton">
+        <form onsubmit="login(event)">
+            <input id="usuario" type="text" placeholder="usuario" required>
+            <input id="contraseña" type="password" placeholder="contraseña" required>
+            <button type="submit" value="enviar" class="boton">Enviar</button>
         </form>    
         <p>no tienes una cuenta? registrate <a href="../screens/registrarse.html">aca</a></p>
     </div>
 </body>
+
+
+    <script>
+          function login(event) {
+            event.preventDefault();
+            let usuario = document.getElementById('usuario').value;
+            let contraseña = document.getElementById('contraseña').value;
+            console.log(usuario)
+        fetch(`http://127.0.0.1:5000/login?usuario=${usuario}&contraseña=${contraseña}`)
+            .then(response_received)
+            .then(parse_data)
+            .catch(request_error)
+         }        
+         function request_error(error) {
+            console.log(error);
+        }
+
+       // function response_received(response) {
+            //return response.json();
+       // }
+
+     //   function parse_data(content) {
+            
+     //       console.log(content);
+       // }
+        
+function response_received(response) {
+    // Manejar la respuesta como una cadena de texto
+    response.text()
+        .then(function(text) {
+            console.log('Received response:', text);
+            // Hacer cualquier otra cosa con la respuesta
+        });
+}
+    </script>
 </html>
+
+
+
