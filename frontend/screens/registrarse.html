@@ -9,13 +9,59 @@
 <body>  
     <div class="contenedor">
         <img src="../img/registro.png">
-        <form>
-            <input type="text" placeholder="ingresa tu nombre" required>
-            <input type="password" placeholder="crear contraseña" required>
-            <input type="password" placeholder="validar contraseña" required>
-            <input type="button" value="enviar" class="boton">
+        <form onsubmit="signIn(event)">
+            <input id="usuario" type="text" placeholder="ingresa tu nombre" required>
+            <input id="contraseña" type="password" placeholder="crear contraseña" required>
+            <input id="validarContraseña" type="password" placeholder="validar contraseña" required>
+            <input type="submit" value="enviar" class="boton">
         </form>    
         <p>ya tenes una cuenta? ingresa <a href="index.html">aca</a></p>
     </div>
 </body>
+
+<script>
+    function signIn(event) {
+      event.preventDefault();
+      let usuario = document.getElementById('usuario').value;
+      let contraseña = document.getElementById('contraseña').value;
+      let validarContraseña = document.getElementById('validarContraseña').value;
+      console.log(usuario)
+      //verfifica que la psw sea la misma 
+      if (contraseña!=validarContraseña){
+        alert("verifca si pusiste la misma contraseña")
+        return
+      }
+  fetch(`http://127.0.0.1:5000/signIn?usuario=${usuario}&contraseña=${contraseña}`,{
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }})
+      .then(response_received)
+      .then(parse_data)
+      .catch(request_error)
+   }        
+   function request_error(error) {
+      console.log(error);
+  }
+
+function response_received(response) {
+  return response.json();
+ }
+
+  function parse_data(content) {
+//verifica si se creo exitosamente 
+    if(content.creado=="si"){
+        alert(content.message)
+        window.location.href = 'index.html';
+        return;
+    }else{
+        alert(content.message)
+    }
+  }
+
+
+</script>
+
+
+
 </html>

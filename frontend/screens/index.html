@@ -24,7 +24,7 @@
             event.preventDefault();
             let usuario = document.getElementById('usuario').value;
             let contraseña = document.getElementById('contraseña').value;
-            console.log(usuario)
+            
         fetch(`http://127.0.0.1:5000/login?usuario=${usuario}&contraseña=${contraseña}`)
             .then(response_received)
             .then(parse_data)
@@ -34,23 +34,25 @@
             console.log(error);
         }
 
-       // function response_received(response) {
-            //return response.json();
-       // }
+     function response_received(response) {
+        return response.json();
+       }
 
-     //   function parse_data(content) {
+        function parse_data(content) {
+            let usuario = document.getElementById('usuario').value;
+            let contraseña = document.getElementById('contraseña').value;
+        for (let aux = 0; aux < content.length; aux++) {
+            if (content[aux].nombre === usuario && content[aux].contraseña === contraseña) {
+                window.location.href = 'home.html';
+                return;
+            }   
+        } 
+
+        alert("No existe el usuario con esa contraseña en el sistema")
             
-     //       console.log(content);
-       // }
+        }
         
-function response_received(response) {
-    // Manejar la respuesta como una cadena de texto
-    response.text()
-        .then(function(text) {
-            console.log('Received response:', text);
-            // Hacer cualquier otra cosa con la respuesta
-        });
-}
+
     </script>
 </html>
 

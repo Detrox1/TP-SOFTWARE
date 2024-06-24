@@ -10,4 +10,5 @@
 4. Activa el entorno virtual con el siguiente comando: `source myenv/bin/activate`.
 5. Instala Flask en tu entorno con el siguiente comando: `pip install Flask`.
 6. Instala Flask-cors en tu entorno con el siguiente comando: `pip install flask-cors`.
-7. Ejecuta el backend para poder hacer solicitudes: `python3 app.py`.
+7. Instala SQLAlchemy en tu entorno con el siguiente comando: `pip install SQLAlchemy psycopg2-binary`.
+8. Ejecuta el backend para poder hacer solicitudes: `python3 app.py`.
