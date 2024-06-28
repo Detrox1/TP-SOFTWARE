@@ -1,0 +1,200 @@
+*{
+    box-sizing: border-box;
+    padding:0;
+    margin: 0;
+}
+
+body{
+    
+    background-color: #212121;
+}
+
+/*estilos del nav*/
+.header .nav{
+    display: flex; /* convierte a los objetos que estan dentro en objetos "flexibles", lo que permite acomodarlos libremente*/
+    flex-direction: row; /*elegimos la direccion de como van a esta acomodados los objetos flexibles, en este caso en fila*/
+    background-color: #171717;
+    color:aliceblue ;
+    align-content: center;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 10px;
+}
+
+/*estilos del perfil*/
+.header .nav .perfil{
+    position: relative; /* al final de todo hay una explicacion simple*/
+    padding-right: 20px;
+    border-right: 1px solid #333;    
+}
+
+.header .nav .perfil img{
+    border-radius: 50%;
+    height: 30px;
+    width: 30px;
+    cursor: pointer;
+}
+
+/*estilos del menu desplegable*/
+.header .nav .perfil .menu{
+    visibility: hidden; /*esto hace que inicialmente no se muestre*/
+    overflow: hidden;  /*esto es para que oculte las cosas que sobresalen de su espacio*/
+    position: absolute; /**/
+    top: 50px;
+    background-color:#4A4A4A;
+    min-width: 160px;  /*el minimo de ancho que debe tener*/
+    border-radius: 10px;
+    z-index: 1;  /*esto es para que se muestre por encima de otros objetos*/
+    
+}
+
+.header .nav .perfil .menu ul{
+    list-style-type: none;
+}
+
+.header .nav .perfil .menu ul li{
+    padding: 8px 16px;
+    margin: 10px 0;
+    width: 100%;
+    
+}
+
+/*esto hace que cuando pongas el mouse por encima cambie de color*/
+.header .nav .perfil .menu ul li:hover{
+    background-color: rgb(6, 113, 206);
+    border-radius: 10px;
+}
+
+.header .nav .perfil .menu ul li a{
+    color: aliceblue;
+    text-decoration: none;
+}
+
+/*agrego el logo*/
+.header .nav .logo img{
+    justify-content: center; /*esto es para que la img quede centrado en su contenedor*/
+    margin-left: 150px;
+}
+
+/*configuramos la zona de dinero y materiales*/
+
+.header .nav .info{
+    display: flex;
+}
+
+.header .nav .info .dinero,.header .nav .info .material{
+    display: flex;
+    align-items: center;
+    border-left: 1px solid #333;
+    margin-left:  20px;
+    
+}
+
+.header .nav .info .dinero img,.header .nav .info .material img{
+    height: 30px;
+    width: 30px;
+}
+
+.header .nav .info .dinero p,.header .nav .info .material p{
+    margin: 10px;
+}
+
+h1 {
+    display: flex;
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
+    margin: 0;
+    border-radius: 5px;
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 10000;
+    font-style: normal;
+    color: bisque;
+}
+h3 {
+    margin: 10px;
+    color:darkred;
+    text-shadow: 
+                -1px -1px 0 #000,  
+                 1px -1px 0 #000,
+                -1px  1px 0 #000,
+                 1px  1px 0 #000;
+
+}
+mark {
+    background-color: whitesmoke; /* Cambia el color de fondo */
+    border: 2px solid darkred; /* Borde */
+    border-radius: 10px; /* Bordes curvados */
+    padding: 2px 5px; /* Espacio interno */
+}
+
+.edificios-lista {
+   list-style-type: none;
+    padding: 0;
+    width: 80%;
+    max-width: 7000px;
+}
+
+.edificio-item {
+    background-image: url(../img/barrios.webp);
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin: 10px 0;
+    padding: 100px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 100;
+    font-style: normal;
+}
+
+.edificio-item2 {
+    background-image: url(../img/localescomerciales.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin: 10px 0;
+    padding: 100px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 100;
+    font-style: normal;
+}
+
+.edificio-item3 {
+    background-image: url(../img/parques.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin: 10px 0;
+    padding: 100px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 100;
+    font-style: normal;
+}
+
+.edificio-item4 {
+    background-image: url(../img/puentes.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin: 10px 0;
+    padding: 100px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 100;
+    font-style: normal;
+}
+
+.edificio-item h2 {
+    margin: 0 0 10px 0;
+}
+
+.edificio-item p {
+    margin: 0;
+}
