@@ -43,7 +43,7 @@
             let contraseña = document.getElementById('contraseña').value;
         for (let aux = 0; aux < content.length; aux++) {
             if (content[aux].nombre === usuario && content[aux].contraseña === contraseña) {
-                window.location.href = 'home.html';
+                window.location.href = `home.html?id=${content[aux].id}`;
                 return;
             }   
         } 

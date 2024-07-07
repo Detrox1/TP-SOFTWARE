@@ -11,4 +11,5 @@
 5. Instala Flask en tu entorno con el siguiente comando: `pip install Flask`.
 6. Instala Flask-cors en tu entorno con el siguiente comando: `pip install flask-cors`.
 7. Instala SQLAlchemy en tu entorno con el siguiente comando: `pip install SQLAlchemy psycopg2-binary`.
-8. Ejecuta el backend para poder hacer solicitudes: `python3 app.py`.
+8. Instala Flask SQLAlchemy en tu entorno con el siguiente comando: `pip install flask_sqlalchemy`.
+9. Ejecuta el backend para poder hacer solicitudes: `python3 app.py`.

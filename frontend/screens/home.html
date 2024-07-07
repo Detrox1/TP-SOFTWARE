@@ -4,19 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../stylesheet/homestyle.css">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <title>home</title>
 </head>
-<body>
-    <header class="header">
+<body style="   background-color: #212121;">
+    <header class="header" >
         <nav class="nav">
             <div class="perfil" id="perfil-menu">
-                <img src="../img/home/perfil.jpg" alt="perfil">
+                <img id="imagen" alt="perfil">
                 <div class="menu" id="menu">
                     <ul>
-                        <li><a href="#">cerrar sección</a></li>
-                        <li><a href="#">configurar perfil</a></li>
+                        <li><a href="index.html">cerrar sección</a></li>
+                        <li><a href="#" data-toggle="modal" data-target="#editarPerfilModal">configurar perfil</a></li>
                     </ul>
                 </div>
+                <p id="nombre"></p>
             </div>    
             <div class="logo">
                 <img src="../img/home/logo.png" alt="logo">
@@ -57,6 +59,76 @@
         
     </div>
 
+
+<!-- Modal -->
+<div class="modal fade" id="editarPerfilModal" tabindex="-1" role="dialog" aria-labelledby="editarPerfilModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-dark text-white">
+                <h5 class="modal-title" id="editarPerfilModalLabel">Editar Perfil</h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body bg-dark text-white">
+                <!-- Formulario para editar perfil -->
+                <form id="formularioPerfil" onsubmit="guardarCambios(event)">
+                    <div class="form-group">
+                        <label for="nombre" class="text-white">Nombre</label>
+                        <input type="text" class="form-control" id="nombre" name="nombre">
+                    </div>
+                    <div class="form-group">
+                        <label for="imagen" class="text-white">Imagen (URL)</label>
+                        <input type="text" class="form-control" id="imagen" name="imagen">
+                    </div>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+  <!-- Incluir JavaScript de Bootstrap -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
     <script src="../JS/homescripts.js"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", cargarPagina);
+    function cargarPagina(event) {
+        event.preventDefault();
+        //traigo el id de los parametros
+        const valores = window.location.search;
+        const urlParams = new URLSearchParams(valores)
+        var id = urlParams.get('id')
+       
+
+        fetch(`http://127.0.0.1:5000/selectById?id=${id}`)
+            .then(response_received)
+            .then(parse_data)
+            .catch(request_error)
+         }        
+         function request_error(error) {
+            console.log(error);
+        }
+
+         function response_received(response) {
+            return response.json();
+        }
+        function parse_data(content) {
+        document.getElementById('nombre').textContent = `Nombre: ${content.nombre}`;
+        const imagen = document.getElementById("imagen");
+        imagen.setAttribute("src", content.imagen)
+
+        }
+
+    
+
+    </script>
 </body>
 </html>

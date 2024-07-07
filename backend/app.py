@@ -1,6 +1,7 @@
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from flask_cors import CORS
 from bd import db, Usuario
+import base64
 
 app = Flask(__name__)
 
@@ -19,15 +20,9 @@ CORS(app)
 # Ruta para manejar la autenticación/login
 @app.route('/login', methods=['GET'])
 def login():
-    # Obtener los datos del formulario de la URL 
-    usuario = request.args.get('usuario')
-    contraseña = request.args.get('contraseña')
-
 #Hago un select de todos los usuarios para trabajarlo en el js
     usuarios = Usuario.query.all()
-    usuarios_list = [{'nombre': usuario.nombre, 'contraseña': usuario.contraseña} for usuario in usuarios]
-    
-
+    usuarios_list = [{'nombre': usuario.nombre, 'contraseña': usuario.contraseña, 'id': usuario.id} for usuario in usuarios]
     return usuarios_list
 
 
@@ -46,9 +41,6 @@ def signIn():
     for aux in usuarios:
         if aux.nombre == usuario:
             return {'message': 'El nombre de usuario ya existe','creado': 'no'}
-        
-
-
 
     #crea e inserta el nuevo usarios
     nuevo_usuario = Usuario(id=id, nombre=usuario, contraseña=contraseña)
@@ -58,6 +50,20 @@ def signIn():
     return {'message': 'Usuario creado exitosamente','creado': 'si', 'usuario': {'id': nuevo_usuario.id, 'nombre': nuevo_usuario.nombre}}
 
 
+# Ruta para que me devuelva un usuario segun el id
+@app.route('/selectById', methods=['get'])
+def selectById():
+    #agarra los parametros de la url
+    id = request.args.get('id')
+    #Busca en la base de datos el usuario con el msimo id
+    usuario = Usuario.query.get(id)
+    print(usuario.imagen)
+    return jsonify({
+                'id': usuario.id,
+                'nombre': usuario.nombre,
+                'contraseña': usuario.contraseña,
+                'imagen': usuario.imagen
+            })
 
 if __name__ == '__main__':
     app.run(debug=True)
