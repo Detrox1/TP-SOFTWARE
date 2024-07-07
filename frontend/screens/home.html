@@ -7,88 +7,88 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <title>home</title>
 </head>
-<body style="   background-color: #212121;">
-    <header class="header" >
-        <nav class="nav">
-            <div class="perfil" id="perfil-menu">
-                <img id="imagen" alt="perfil">
-                <div class="menu" id="menu">
-                    <ul>
-                        <li><a href="index.html">cerrar sección</a></li>
-                        <li><a href="#" data-toggle="modal" data-target="#editarPerfilModal">configurar perfil</a></li>
-                    </ul>
-                </div>
-                <p id="nombre"></p>
-            </div>    
-            <div class="logo">
-                <img src="../img/home/logo.png" alt="logo">
+<body style="background-color: #212121;">
+
+<header class="header">
+    <nav class="nav">
+        <div class="perfil" id="perfil-menu">
+            <img id="imagen" alt="perfil">
+            <div class="menu" id="menu">
+                <ul>
+                    <li><a href="index.html">Cerrar sesión</a></li>
+                    <li><a href="#" data-toggle="modal" data-target="#editarPerfilModal">Configurar perfil</a></li>
+                </ul>
             </div>
-            <div class="info">
-                <div class="dinero">
-                    <p id="cantDinero">0</p>
-                    <img src="../img/home/dinero.png" alt="logo_dinero">
-                </div>
-                <div class="material">
-                    <p id="cantMaterial">0</p>
-                    <img src="../img/home/material.png" alt="logo_material">
-                </div>
-            </div>
-        </nav>
-    </header>
-    <div class="medio">
-        <div class="edificios">
-            <a href="">
-                <img src="../img/home/mis_edificios.jpg" alt="edificios">
-                <div class="mostrar_texto">edificios</div>
-            </a>    
+            <p id="nombre"></p>
+        </div>    
+        <div class="logo">
+            <img src="../img/home/logo.png" alt="logo">
         </div>
-        <div class="colum">
-            <div class="accion comprar">
-                <a href="">
-                    <img src="../img/home/comprar.jpg" alt="">
-                    <div class="mostrar_texto">comprar</div>
-                </a>
+        <div class="info">
+            <div class="dinero">
+                <p id="cantDinero">0</p>
+                <img src="../img/home/dinero.png" alt="logo_dinero">
             </div>
-            <div class="accion">
-                <a href="">
-                    <img src="../img/home/construir.jpg" alt="">
-                    <div class="mostrar_texto">construir</div>
-                </a>    
+            <div class="material">
+                <p id="cantMaterial">0</p>
+                <img src="../img/home/material.png" alt="logo_material">
             </div>
         </div>
-        
+    </nav>
+</header>
+
+<div class="medio">
+    <div class="edificios">
+        <a href="#">
+            <img src="../img/home/mis_edificios.jpg" alt="edificios">
+            <div class="mostrar_texto">Edificios</div>
+        </a>    
     </div>
-
-
-<!-- Modal -->
-<div class="modal fade" id="editarPerfilModal" tabindex="-1" role="dialog" aria-labelledby="editarPerfilModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header bg-dark text-white">
-                <h5 class="modal-title" id="editarPerfilModalLabel">Editar Perfil</h5>
-                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body bg-dark text-white">
-                <!-- Formulario para editar perfil -->
-                <form id="formularioPerfil" onsubmit="guardarCambios(event)">
-                    <div class="form-group">
-                        <label for="nombre" class="text-white">Nombre</label>
-                        <input type="text" class="form-control" id="nombre" name="nombre">
-                    </div>
-                    <div class="form-group">
-                        <label for="imagen" class="text-white">Imagen (URL)</label>
-                        <input type="text" class="form-control" id="imagen" name="imagen">
-                    </div>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
-                </form>
-            </div>
+    <div class="colum">
+        <div class="accion comprar">
+            <a href="#">
+                <img src="../img/home/comprar.jpg" alt="">
+                <div class="mostrar_texto">Comprar</div>
+            </a>
+        </div>
+        <div class="accion">
+            <a href="#">
+                <img src="../img/home/construir.jpg" alt="">
+                <div class="mostrar_texto">Construir</div>
+            </a>    
         </div>
     </div>
 </div>
 
+
+    <!-- Modal -->
+    <div class="modal fade" id="editarPerfilModal" tabindex="-1" role="dialog" aria-labelledby="editarPerfilModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-dark text-white">
+                    <h5 class="modal-title" id="editarPerfilModalLabel">Editar Perfil</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body bg-dark text-white">
+                    <!-- Formulario para editar perfil -->
+                    <form id="formularioPerfil" onsubmit="updateProfile(event)">
+                        <div class="form-group">
+                            <label for="nombre" class="text-white">Nombre</label>
+                            <input type="text" class="form-control" id="nombreInput" name="nombre" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="imagen" class="text-white">Imagen (URL)</label>
+                            <input type="text" class="form-control" id="imagenInput" name="imagen">
+                        </div>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary" >Guardar Cambios</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
 
@@ -106,12 +106,12 @@
         const valores = window.location.search;
         const urlParams = new URLSearchParams(valores)
         var id = urlParams.get('id')
-       
 
         fetch(`http://127.0.0.1:5000/selectById?id=${id}`)
             .then(response_received)
             .then(parse_data)
             .catch(request_error)
+        
          }        
          function request_error(error) {
             console.log(error);
@@ -121,13 +121,69 @@
             return response.json();
         }
         function parse_data(content) {
+        console.log("dsa")
+        console.log(content.nombre)
         document.getElementById('nombre').textContent = `Nombre: ${content.nombre}`;
         const imagen = document.getElementById("imagen");
         imagen.setAttribute("src", content.imagen)
 
         }
 
+
+
+
+    function updateProfile(event) {
+    event.preventDefault();
     
+    //traigo el id de los parametros
+    const valores = window.location.search;
+    const urlParams = new URLSearchParams(valores)
+    var id = urlParams.get('id')
+    console.log(id)
+
+    const nombre = document.getElementById('nombreInput').value;
+    const imagen = document.getElementById('imagenInput').value;
+    const data = {
+        id: id,
+        nombre: nombre,
+        imagen: imagen
+    };
+    console.log('Nombre:', data.nombre);
+    console.log('Imagen:', imagen);
+
+
+    
+    
+    fetch('http://127.0.0.1:5000/updateProfile', {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)  // Convertir el objeto a JSON
+    })
+    .then(response_received)
+    .then(parse_data2)
+    .catch(request_error);
+}
+   function request_error(error) {
+      console.log(error);
+  }
+
+function response_received(response) {
+  return response.json();
+ }
+
+  function parse_data2(content) {
+   
+        alert(content.message)
+   
+    window.location.reload();
+  }
+
+
+    
+
+
 
     </script>
 </body>

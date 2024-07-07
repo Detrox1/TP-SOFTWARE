@@ -1,9 +1,11 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from bd import db, Usuario
-import base64
+
 
 app = Flask(__name__)
+CORS(app)
+
 
 # Configuración de la base de datos
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:Franco@localhost/tpintro'
@@ -14,8 +16,6 @@ db.init_app(app)
 with app.app_context():
     db.create_all()
 
-# Habilitar CORS para todos los dominios
-CORS(app)
 
 # Ruta para manejar la autenticación/login
 @app.route('/login', methods=['GET'])
@@ -53,17 +53,59 @@ def signIn():
 # Ruta para que me devuelva un usuario segun el id
 @app.route('/selectById', methods=['get'])
 def selectById():
+    
     #agarra los parametros de la url
     id = request.args.get('id')
+   
     #Busca en la base de datos el usuario con el msimo id
     usuario = Usuario.query.get(id)
-    print(usuario.imagen)
+    
     return jsonify({
                 'id': usuario.id,
                 'nombre': usuario.nombre,
                 'contraseña': usuario.contraseña,
                 'imagen': usuario.imagen
             })
+@app.route('/updateProfile', methods=['PUT'])
+def updateProfile():
+    # Obtener datos del cuerpo de la solicitud (payload JSON)
+    data = request.get_json()
+    id = data.get('id')
+    nombre = data.get('nombre')
+    imagen = data.get('imagen')
+    
+    # Verificar si existe otro usuario con el mismo nombre
+    existing_user = Usuario.query.filter(Usuario.nombre == nombre).filter(Usuario.id != id).first()
+    if existing_user:
+        return jsonify({'message': 'Ya existe un usuario con ese nombre','error':400}), 400
+    
+    # Obtener el usuario desde la base de datos
+    usuario = Usuario.query.get(id)
+    if usuario:
+        usuario.nombre = nombre
+        usuario.imagen = imagen
+        db.session.commit()
+        return jsonify({'message': 'Perfil actualizado exitosamente'}), 200
+    else:
+        return jsonify({'message': 'Usuario no encontrado'}), 404
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
