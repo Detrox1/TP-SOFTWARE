@@ -25,10 +25,9 @@
       let usuario = document.getElementById('usuario').value;
       let contraseña = document.getElementById('contraseña').value;
       let validarContraseña = document.getElementById('validarContraseña').value;
-      console.log(usuario)
       //verfifica que la psw sea la misma 
       if (contraseña!=validarContraseña){
-        alert("verifca si pusiste la misma contraseña")
+        alert("verifica si pusiste la misma contraseña")
         return
       }
   fetch(`http://127.0.0.1:5000/signIn?usuario=${usuario}&contraseña=${contraseña}`,{

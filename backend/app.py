@@ -8,7 +8,7 @@ CORS(app)
 
 
 # Configuración de la base de datos
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:Franco@localhost/tpintro'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://usuario_bd:contraseña_bd@localhost/nombre_bd'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Inicialización de la extensión SQLAlchemy
