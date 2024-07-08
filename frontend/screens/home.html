@@ -26,8 +26,7 @@
         </div>
         <div class="info">
             <div class="dinero">
-                <p id="cantDinero">0</p>
-                <img src="../img/home/dinero.png" alt="logo_dinero">
+                <p id="plata"></p>
             </div>
             <div class="material">
                 <p id="cantMaterial">0</p>
@@ -39,15 +38,15 @@
 
 <div class="medio">
     <div class="edificios">
-        <a href="#">
+        <a href="misedificios.html" >
             <img src="../img/home/mis_edificios.jpg" alt="edificios">
             <div class="mostrar_texto">Edificios</div>
         </a>    
     </div>
     <div class="colum">
         <div class="accion comprar">
-            <a href="#">
-                <img src="../img/home/comprar.jpg" alt="">
+            <a onclick=comprarEdificios()>
+                <img  src="../img/home/comprar.jpg" alt="">
                 <div class="mostrar_texto">Comprar</div>
             </a>
         </div>
@@ -121,11 +120,10 @@
             return response.json();
         }
         function parse_data(content) {
-        console.log("dsa")
-        console.log(content.nombre)
         document.getElementById('nombre').textContent = `Nombre: ${content.nombre}`;
         const imagen = document.getElementById("imagen");
         imagen.setAttribute("src", content.imagen)
+        document.getElementById('plata').textContent = `Plata: ${content.plata}`;
 
         }
 
@@ -139,7 +137,7 @@
     const valores = window.location.search;
     const urlParams = new URLSearchParams(valores)
     var id = urlParams.get('id')
-    console.log(id)
+
 
     const nombre = document.getElementById('nombreInput').value;
     const imagen = document.getElementById('imagenInput').value;
@@ -181,7 +179,14 @@ function response_received(response) {
   }
 
 
+  function comprarEdificios() {
+    //traigo el id de los parametros
+    const valores = window.location.search;
+    const urlParams = new URLSearchParams(valores)
+    var id = urlParams.get('id')
+    window.location.href = `comprarconstrucciones.html?id=${id}`;
     
+  }
 
 
 

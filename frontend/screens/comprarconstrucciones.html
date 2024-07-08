@@ -5,49 +5,53 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Comprar</title>
     <link rel="stylesheet" href="../stylesheet/comprarconstrucciones.css">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
   </head>
   <body>
     <header class="header">
-      <nav class="nav">
-          <div class="perfil" id="perfil-menu">
-              <img src="../img/home/perfil.jpg" alt="perfil">
-              <div class="menu" id="menu">
-                  <ul>
-                      <li><a href="#">cerrar sección</a></li>
-                      <li><a href="#">configurar perfil</a></li>
-                  </ul>
-              </div>
-          </div>    
-          <div class="logo">
-              <img src="../img/home/logo.png" alt="logo">
-          </div>
-          <div class="info">
-              <div class="dinero">
-                  <p id="cantDinero">0</p>
-                  <img src="../img/home/dinero.png" alt="logo_dinero">
-              </div>
-              <div class="material">
-                  <p id="cantMaterial">0</p>
-                  <img src="../img/home/material.png" alt="logo_material">
-              </div>
-          </div>
-      </nav>
+        <nav class="nav">
+            <div class="perfil" id="perfil-menu">
+                <img id="imagen" alt="perfil">
+                <div class="menu" id="menu">
+                    <ul>
+                        <li><a href="index.html">Cerrar sesión</a></li>
+                        <li><a href="#" data-toggle="modal" data-target="#editarPerfilModal">Configurar perfil</a></li>
+                    </ul>
+                </div>
+                <p id="nombre"></p>
+            </div>    
+            <div class="logo">
+                <img src="../img/home/logo.png" alt="logo">
+            </div>
+            <div class="info">
+                <div class="dinero">
+                    <p id="plata"></p>
+                </div>
+                <div class="material">
+                    <p id="cantMaterial">0</p>
+                    <img src="../img/home/material.png" alt="logo_material">
+                </div>
+            </div>
+        </nav>
   </header>
       <section id="nuestros-programas">
         <div class="contenedor">
             <h2>¿Que tipo de construccion quieres hacer?</h2>
             <div class="programas">
-                <div class="carta">
+                <div >
                     <h3>Casas</h3>
-                    <button>Seleccionar</button>
+                    <div id="casas" class="row justify-content-center"></div>
+                    </div>
+                   
                 </div>
-                <div class="carta">
+                <div >
                     <h3>Locales comerciales</h3>
-                    <button>Seleccionar</button>
+                    <div id="supermercados" class="row justify-content-center"></div>
+                    
                 </div>
                 <div class="carta">
                     <h3>Plazas</h3>
-                    <button>Seleccionar</button>
+                    <div id="parques" class="row justify-content-center"></div>
                 </div>  
                 <div class="carta">
                   <h3>Puentes</h3>
@@ -58,4 +62,205 @@
     </section>
   <script src="../JS/homescripts.js"></script>
   </body>
+
+
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="editarPerfilModal" tabindex="-1" role="dialog" aria-labelledby="editarPerfilModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-dark text-white">
+                    <h5 class="modal-title" id="editarPerfilModalLabel">Editar Perfil</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body bg-dark text-white">
+                    <!-- Formulario para editar perfil -->
+                    <form id="formularioPerfil" onsubmit="updateProfile(event)">
+                        <div class="form-group">
+                            <label for="nombre" class="text-white">Nombre</label>
+                            <input type="text" class="form-control" id="nombreInput" name="nombre" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="imagen" class="text-white">Imagen (URL)</label>
+                            <input type="text" class="form-control" id="imagenInput" name="imagen">
+                        </div>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary" >Guardar Cambios</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+  <!-- Incluir JavaScript de Bootstrap -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+  <script>
+    document.addEventListener("DOMContentLoaded", DOMContentLoaded);
+
+    function DOMContentLoaded(event) {
+        event.preventDefault();
+       
+        const valores = window.location.search;
+        const urlParams = new URLSearchParams(valores)
+        var id = urlParams.get('id')
+
+        fetch(`http://127.0.0.1:5000/selectById?id=${id}`)
+            .then(response_received)
+            .then(cargaPerfil)
+            .catch(request_error)
+        fetch(`http://127.0.0.1:5000/selectTiposEdificios`)
+        .then(response_received)
+        .then(mostrarCartas)
+        .catch(request_error);   
+
+         }        
+         function request_error(error) {
+            console.log(error);
+        }
+
+         function response_received(response) {
+            return response.json();
+        }
+        function cargaPerfil(content) {
+        document.getElementById('nombre').textContent = `Nombre: ${content.nombre}`;
+        const imagen = document.getElementById("imagen");
+        imagen.setAttribute("src", content.imagen)
+        document.getElementById('plata').textContent = `Plata: ${content.plata}`;
+
+        }
+    
+
+    function updateProfile(event) {
+    event.preventDefault();
+    
+   
+    const valores = window.location.search;
+    const urlParams = new URLSearchParams(valores)
+    var id = urlParams.get('id')
+
+
+    const nombre = document.getElementById('nombreInput').value;
+    const imagen = document.getElementById('imagenInput').value;
+    const data = {
+        id: id,
+        nombre: nombre,
+        imagen: imagen
+    };
+    console.log('Nombre:', data.nombre);
+    console.log('Imagen:', imagen);
+
+
+    
+    
+    fetch('http://127.0.0.1:5000/updateProfile', {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)  
+    })
+    .then(response_received)
+    .then(updateProfile)
+    .catch(request_error);
+}
+   function request_error(error) {
+      console.log(error);
+  }
+
+function response_received(response) {
+  return response.json();
+ }
+
+  function updateProfile(content) {
+   
+        alert(content.message)
+   
+    window.location.reload();
+  }
+
+function request_error(error) {
+    console.log(error);
+}
+
+function response_received(response) {
+    return response.json();
+}
+
+function mostrarCartas(content) {
+    const containerC = document.getElementById("casas");
+    const containerP = document.getElementById("parques");
+    const containerS = document.getElementById("supermercados");
+
+    for (let aux = 0; aux < content.length; aux++) {
+        const div = document.createElement("div");
+        div.setAttribute("class", "col-6 col-md-4 col-lg-3 col-xl-2 mb-4");
+
+        const card = document.createElement("div");
+        card.setAttribute("class", "card h-100 shadow-sm");
+
+        const imagen = document.createElement("img");
+        imagen.setAttribute("class", "card-img-top");
+        imagen.setAttribute("src", content[aux].imagen);
+        imagen.setAttribute("alt", content[aux].nombre);
+
+        const cardBody = document.createElement("div");
+        cardBody.setAttribute("class", "card-body d-flex flex-column justify-content-between");
+
+        const nombre = document.createElement("h5");
+        nombre.setAttribute("class", "card-title");
+        nombre.textContent = content[aux].nombre;
+
+        const precio = document.createElement("p");
+        precio.setAttribute("class", "card-text");
+        precio.textContent = `Precio: ${content[aux].precio}`;
+
+        const tiemporecaudacion = document.createElement("p");
+        tiemporecaudacion.setAttribute("class", "card-text");
+        tiemporecaudacion.textContent = `Tiempo de Recaudación: ${content[aux].tiemporecaudacion}`;
+
+        const platarecaudacion = document.createElement("p");
+        platarecaudacion.setAttribute("class", "card-text");
+        platarecaudacion.textContent = `Plata de Recaudación: ${content[aux].platarecaudacion}`;
+
+        const poblacion = document.createElement("p");
+        poblacion.setAttribute("class", "card-text");
+        poblacion.textContent = `Poblacion: ${content[aux].poblacion}`;
+
+        card.appendChild(imagen);
+        cardBody.appendChild(nombre);
+        cardBody.appendChild(precio);
+        cardBody.appendChild(tiemporecaudacion);
+        cardBody.appendChild(platarecaudacion);
+        cardBody.appendChild(poblacion)
+        card.appendChild(cardBody);
+
+        // Agregar la tarjeta al contenedor correspondiente según la clase del edificio
+        if (content[aux].clase === 'C') {
+            containerC.appendChild(div);
+        } else if (content[aux].clase === 'P') {
+            containerP.appendChild(div);
+        } else if (content[aux].clase === 'S') {
+            containerS.appendChild(div);
+        } else {
+            console.log(`Tipo de edificio desconocido para: ${content[aux].nombre}`);
+        }
+
+        div.appendChild(card);
+    }
+}
+
+
+</script>
+
+
+
 </html>

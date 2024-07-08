@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from bd import db, Usuario
+from bd import db, Usuario,TiposEdificios
 
 
 app = Flask(__name__)
@@ -35,7 +35,7 @@ def signIn():
     contraseña = request.args.get('contraseña')
     #hace un select * para poder saber el ultimo id de los usuarios
     usuarios = Usuario.query.all()
-    usuarios_list = [{'id': usuario.id, 'nombre': usuario.nombre, 'contraseña': usuario.contraseña} for usuario in usuarios]
+    usuarios_list = [{'id': usuario.id, 'nombre': usuario.nombre, 'contraseña': usuario.contraseña, 'plata':0} for usuario in usuarios]
     id=len(usuarios_list)+1
     #verifica si existe un usario con el mismo nombre
     for aux in usuarios:
@@ -54,21 +54,20 @@ def signIn():
 @app.route('/selectById', methods=['get'])
 def selectById():
     
-    #agarra los parametros de la url
     id = request.args.get('id')
-   
-    #Busca en la base de datos el usuario con el msimo id
+    
     usuario = Usuario.query.get(id)
     
     return jsonify({
                 'id': usuario.id,
                 'nombre': usuario.nombre,
                 'contraseña': usuario.contraseña,
-                'imagen': usuario.imagen
+                'imagen': usuario.imagen,
+                'plata': usuario.plata
             })
 @app.route('/updateProfile', methods=['PUT'])
 def updateProfile():
-    # Obtener datos del cuerpo de la solicitud (payload JSON)
+    
     data = request.get_json()
     id = data.get('id')
     nombre = data.get('nombre')
@@ -90,7 +89,22 @@ def updateProfile():
         return jsonify({'message': 'Usuario no encontrado'}), 404
 
 
-
+@app.route('/selectTiposEdificios', methods=['GET'])
+def selectTiposEdificios():
+    tipoEdificios = TiposEdificios.query.all()
+    listaTipoEdificios = [{
+        'id': tipo.id,
+        'nombre': tipo.nombre,
+        'imagen': tipo.imagen,
+        'clase': tipo.clase,
+        'poblacion': tipo.poblacion,
+        'precio': tipo.precio,
+        'descripcion': tipo.descripcion,
+        'tiemporecaudacion': str(tipo.tiemporecaudacion),  # Convertir timedelta a str
+        'platarecaudacion': tipo.platarecaudacion
+    } for tipo in tipoEdificios]
+  
+    return jsonify(listaTipoEdificios)
 
 
 
