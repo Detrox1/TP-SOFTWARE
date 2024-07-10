@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from bd import db, Usuario,TiposEdificios
+from bd import db, Usuario,TiposEdificios,MisEdificios
 
 
 app = Flask(__name__)
@@ -8,8 +8,9 @@ CORS(app)
 
 
 # Configuración de la base de datos
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://usuario_bd:contraseña_bd@localhost/nombre_bd'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:Franco@localhost/tpintro'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
 
 # Inicialización de la extensión SQLAlchemy
 db.init_app(app)
@@ -106,17 +107,24 @@ def selectTiposEdificios():
   
     return jsonify(listaTipoEdificios)
 
+@app.route('/comprarEdificio', methods=['post'])
+def comprarEdificio():
+    
+    idEdificio = request.args.get('idEdificio')
+    idUsuario = request.args.get('idUsuario')
+    #Resto la plata de lo que sale el edificio al usuario
+    usuario = Usuario.query.get(idUsuario)
+    edificio = TiposEdificios.query.get(idEdificio)
+    usuario.plata=usuario.plata-edificio.precio
+    #creo en la tabla misedificios una fila con el nuevo edificio del usuario
+    misEdificios = MisEdificios.query.all()
+    misEdificios_list = [{'id': miEdificio.id} for miEdificio in misEdificios]
+    idMisEdificios=len(misEdificios_list)+1
+    miEdificio = MisEdificios(id=idMisEdificios, nombre=edificio.nombre, imagen=edificio.imagen,clase=edificio.clase,poblacion=edificio.poblacion,descripcion=edificio.descripcion,tiemporecaudacion=edificio.tiemporecaudacion,platarecaudacion=edificio.platarecaudacion,idusuario=idUsuario,idedificio=idEdificio)
+    db.session.add(miEdificio)
+    db.session.commit()
 
-
-
-
-
-
-
-
-
-
-
+    return {'message': 'Edificio comprado','comprado': 'si'}
 
 
 

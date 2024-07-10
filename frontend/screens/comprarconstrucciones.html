@@ -20,7 +20,7 @@
                 </div>
                 <p id="nombre"></p>
             </div>    
-            <div class="logo">
+            <div onclick=menu() class="logo">
                 <img src="../img/home/logo.png" alt="logo">
             </div>
             <div class="info">
@@ -40,7 +40,7 @@
             <div class="programas">
                 <div >
                     <h3>Casas</h3>
-                    <div id="casas" class="row justify-content-center"></div>
+                    <div  id="casas" class="row justify-content-center"></div>
                     </div>
                    
                 </div>
@@ -51,7 +51,7 @@
                 </div>
                 <div class="carta">
                     <h3>Plazas</h3>
-                    <div id="parques" class="row justify-content-center"></div>
+                    <div id="parques"onclick="comprar()" class="row justify-content-center"></div>
                 </div>  
                 <div class="carta">
                   <h3>Puentes</h3>
@@ -135,6 +135,7 @@
         const imagen = document.getElementById("imagen");
         imagen.setAttribute("src", content.imagen)
         document.getElementById('plata').textContent = `Plata: ${content.plata}`;
+        document.getElementById('plata').value = content.plata
 
         }
     
@@ -204,7 +205,9 @@ function mostrarCartas(content) {
     for (let aux = 0; aux < content.length; aux++) {
         const div = document.createElement("div");
         div.setAttribute("class", "col-6 col-md-4 col-lg-3 col-xl-2 mb-4");
-
+        div.addEventListener('click', function() {
+            comprar(content[aux].id,content[aux].precio)
+        });
         const card = document.createElement("div");
         card.setAttribute("class", "card h-100 shadow-sm");
 
@@ -236,6 +239,8 @@ function mostrarCartas(content) {
         poblacion.setAttribute("class", "card-text");
         poblacion.textContent = `Poblacion: ${content[aux].poblacion}`;
 
+        
+
         card.appendChild(imagen);
         cardBody.appendChild(nombre);
         cardBody.appendChild(precio);
@@ -258,7 +263,54 @@ function mostrarCartas(content) {
         div.appendChild(card);
     }
 }
+function comprar(idEdificio,precio) {
 
+    const valores = window.location.search;
+    const urlParams = new URLSearchParams(valores)
+    var idUsuario = urlParams.get('id')
+    
+    plata=document.getElementById('plata').value
+
+    if(plata>=precio){
+        fetch(`http://127.0.0.1:5000/comprarEdificio?idEdificio=${idEdificio}&idUsuario=${idUsuario}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response_received)
+    .then(comprarEdificio)
+    .catch(request_error);
+
+   function request_error(error) {
+      console.log(error);
+  }
+
+function response_received(response) {
+  return response.json();
+ }
+
+  function comprarEdificio(content) {
+   
+        alert(content.message)
+   
+    window.location.reload();
+  }
+    }
+    else{
+        alert("No tienes suficiente dinero para comprar este edificio")
+    }
+
+
+}
+function menu() {
+    //traigo el id de los parametros
+    const valores = window.location.search;
+    const urlParams = new URLSearchParams(valores)
+    var id = urlParams.get('id')
+    window.location.href = `home.html?id=${id}`;
+    
+  }
 
 </script>
 

@@ -1,5 +1,7 @@
 from datetime import timedelta
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.orm import relationship
+from sqlalchemy import ForeignKey
 
 db = SQLAlchemy()
 
@@ -28,3 +30,22 @@ class TiposEdificios(db.Model):
     tiemporecaudacion = db.Column(db.Interval, nullable=False)
     platarecaudacion = db.Column(db.Integer)
 
+
+class MisEdificios(db.Model):
+    __tablename__ = 'misedificios'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    nombre = db.Column(db.String(255), nullable=False)
+    imagen = db.Column(db.String(255), nullable=False)
+    clase = db.Column(db.String(1), nullable=False)
+    poblacion = db.Column(db.Integer, nullable=False)
+    descripcion = db.Column(db.Text,nullable=False)
+    tiemporecaudacion = db.Column(db.Interval, nullable=False)
+    platarecaudacion = db.Column(db.Integer, nullable=False)
+    idusuario = db.Column(db.Integer, ForeignKey('usuarios.id'), nullable=False)
+    idedificio = db.Column(db.Integer, ForeignKey('tiposedificios.id'), nullable=False)
+
+    usuario = relationship('Usuario', back_populates='misedificios')
+    tiposedificio = relationship('TiposEdificios', back_populates='misedificios')
+
+Usuario.misedificios = relationship('MisEdificios', order_by=MisEdificios.id, back_populates='usuario')
+TiposEdificios.misedificios = relationship('MisEdificios', order_by=MisEdificios.id, back_populates='tiposedificio')

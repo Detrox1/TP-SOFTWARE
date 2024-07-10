@@ -22,7 +22,7 @@
             <p id="nombre"></p>
         </div>    
         <div class="logo">
-            <img src="../img/home/logo.png" alt="logo">
+            <img onclick=menu() src="../img/home/logo.png" alt="logo">
         </div>
         <div class="info">
             <div class="dinero">
@@ -186,8 +186,14 @@ function response_received(response) {
     window.location.href = `comprarconstrucciones.html?id=${id}`;
     
   }
-
-
+  function menu() {
+    //traigo el id de los parametros
+    const valores = window.location.search;
+    const urlParams = new URLSearchParams(valores)
+    var id = urlParams.get('id')
+    window.location.href = `home.html?id=${id}`;
+    
+  }
 
     </script>
 </body>

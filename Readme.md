@@ -1,4 +1,4 @@
-<h1 align="center">¡Bienvenidos al juego NombreJuego!</h1>
+<h1 align="center">¡Bienvenidos al juego Simsmejo!</h1>
 
 <h3 align="center">Este es un fantástico juego para pasar el rato creando una hermosa ciudad. En esta ciudad, tú eres el alcalde y tendrás que construir diferentes edificios que te proporcionarán dinero o población. Con el dinero, podrás seguir construyendo o mejorando los diferentes edificios, mientras que la población te permitirá desbloquear más edificios para que tu ciudad se convierta en la mejor de todas. ¡Esperamos que pases un buen rato jugando a nuestro juego! 😄😄😄</h3>
 
@@ -32,6 +32,6 @@
 
 16. Entra al archivo `app.py` y en la línea 11 donde dice:
     ```python
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://zequi:zequi@localhost/tpintro'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://usuario_bd:contraseña_bd@localhost/nombre_bd'
     ```
-    Modifica `'postgresql://zequi:zequi@localhost/tpintro'` con la siguiente estructura `'postgresql://usuario_bd:contraseña_bd@localhost/nombre_bd'`.
+    Modifica `'postgresql://usuario_bd:contraseña_bd@localhost/nombre_bd'` con usario_bd el usario con el que hayas creado la base de datos, contraseña_bd con la contraseña del usario y nombre_bd con el nombre de la base de datos.
