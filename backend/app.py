@@ -120,12 +120,30 @@ def comprarEdificio():
     misEdificios = MisEdificios.query.all()
     misEdificios_list = [{'id': miEdificio.id} for miEdificio in misEdificios]
     idMisEdificios=len(misEdificios_list)+1
-    miEdificio = MisEdificios(id=idMisEdificios, nombre=edificio.nombre, imagen=edificio.imagen,clase=edificio.clase,poblacion=edificio.poblacion,descripcion=edificio.descripcion,tiemporecaudacion=edificio.tiemporecaudacion,platarecaudacion=edificio.platarecaudacion,idusuario=idUsuario,idedificio=idEdificio)
+    miEdificio = MisEdificios(id=idMisEdificios, nombre=edificio.nombre, imagen=edificio.imagen,clase=edificio.clase,poblacion=edificio.poblacion,descripcion=edificio.descripcion,tiemporecaudacion=edificio.tiemporecaudacion,platarecaudacion=edificio.platarecaudacion,idusuario=idUsuario,idtipoedificio=idEdificio)
     db.session.add(miEdificio)
     db.session.commit()
 
     return {'message': 'Edificio comprado','comprado': 'si'}
 
+@app.route('/selectMisEdificios', methods=['GET'])
+def selectMisEdificios():
+    idusuario = request.args.get('id')
+    misEdificios = MisEdificios.query.filter_by(idusuario=idusuario).all()
+    print(misEdificios)
+    listaTipoEdificios = [{
+        'id': miEdificio.id,
+        'nombre': miEdificio.nombre,
+        'imagen': miEdificio.imagen,
+        'clase': miEdificio.clase,
+        'poblacion': miEdificio.poblacion,
+        'descripcion': miEdificio.descripcion,
+        'tiemporecaudacion': str(miEdificio.tiemporecaudacion),  # Convertir timedelta a str
+        'platarecaudacion': miEdificio.platarecaudacion,
+        'idtipoedificio': miEdificio.idtipoedificio,
+    } for miEdificio in misEdificios]
+  
+    return jsonify(listaTipoEdificios)
 
 
 

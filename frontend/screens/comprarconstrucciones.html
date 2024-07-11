@@ -170,31 +170,15 @@
         body: JSON.stringify(data)  
     })
     .then(response_received)
-    .then(updateProfile)
+    .then(updating)
     .catch(request_error);
 }
-   function request_error(error) {
-      console.log(error);
-  }
-
-function response_received(response) {
-  return response.json();
- }
-
-  function updateProfile(content) {
+  function updating(content) {
    
         alert(content.message)
    
     window.location.reload();
   }
-
-function request_error(error) {
-    console.log(error);
-}
-
-function response_received(response) {
-    return response.json();
-}
 
 function mostrarCartas(content) {
     console.log(content)
@@ -300,7 +284,6 @@ function response_received(response) {
     else{
         alert("No tienes suficiente dinero para comprar este edificio")
     }
-
 
 }
 function menu() {

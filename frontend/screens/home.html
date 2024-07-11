@@ -38,7 +38,7 @@
 
 <div class="medio">
     <div class="edificios">
-        <a href="misedificios.html" >
+        <a onclick=misEdificios() >
             <img src="../img/home/mis_edificios.jpg" alt="edificios">
             <div class="mostrar_texto">Edificios</div>
         </a>    
@@ -146,11 +146,6 @@
         nombre: nombre,
         imagen: imagen
     };
-    
-
-
-    
-    
     fetch('http://127.0.0.1:5000/updateProfile', {
         method: 'PUT',
         headers: {
@@ -159,18 +154,11 @@
         body: JSON.stringify(data)  // Convertir el objeto a JSON
     })
     .then(response_received)
-    .then(parse_data2)
+    .then(updating)
     .catch(request_error);
 }
-   function request_error(error) {
-      console.log(error);
-  }
 
-function response_received(response) {
-  return response.json();
- }
-
-  function parse_data2(content) {
+  function updating(content) {
    
         alert(content.message)
    
@@ -192,6 +180,16 @@ function response_received(response) {
     const urlParams = new URLSearchParams(valores)
     var id = urlParams.get('id')
     window.location.href = `home.html?id=${id}`;
+    
+  }
+  function misEdificios() {
+    //traigo el id de los parametros
+    const valores = window.location.search;
+    const urlParams = new URLSearchParams(valores)
+    var id = urlParams.get('id')
+    console.log(id)
+    window.location.href = `misedificios.html?id=${id}`;
+    
     
   }
 

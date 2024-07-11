@@ -42,7 +42,7 @@ class MisEdificios(db.Model):
     tiemporecaudacion = db.Column(db.Interval, nullable=False)
     platarecaudacion = db.Column(db.Integer, nullable=False)
     idusuario = db.Column(db.Integer, ForeignKey('usuarios.id'), nullable=False)
-    idedificio = db.Column(db.Integer, ForeignKey('tiposedificios.id'), nullable=False)
+    idtipoedificio = db.Column(db.Integer, ForeignKey('tiposedificios.id'), nullable=False)
 
     usuario = relationship('Usuario', back_populates='misedificios')
     tiposedificio = relationship('TiposEdificios', back_populates='misedificios')
