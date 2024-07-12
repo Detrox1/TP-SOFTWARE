@@ -225,3 +225,7 @@ mark {
     margin: 4px 0; /* Espacio entre botones */
     width: 100%;
 }
+.timer {
+    font-weight: bold;
+    margin: 4px 0;
+}

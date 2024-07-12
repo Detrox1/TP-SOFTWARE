@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from bd import db, Usuario,TiposEdificios,MisEdificios
+from datetime import timedelta
 
 
 app = Flask(__name__)
@@ -126,6 +127,14 @@ def comprarEdificio():
 
     return {'message': 'Edificio comprado','comprado': 'si'}
 
+
+# Función para formatear timedelta
+def format_timedelta(td):
+    total_seconds = int(td.total_seconds())
+    hours, remainder = divmod(total_seconds, 3600)
+    minutes, seconds = divmod(remainder, 60)
+    return f"{hours:02}:{minutes:02}:{seconds:02}"
+
 @app.route('/selectMisEdificios', methods=['GET'])
 def selectMisEdificios():
     idusuario = request.args.get('id')
@@ -138,13 +147,21 @@ def selectMisEdificios():
         'clase': miEdificio.clase,
         'poblacion': miEdificio.poblacion,
         'descripcion': miEdificio.descripcion,
-        'tiemporecaudacion': str(miEdificio.tiemporecaudacion),  # Convertir timedelta a str
+        'tiemporecaudacion': format_timedelta(miEdificio.tiemporecaudacion),
         'platarecaudacion': miEdificio.platarecaudacion,
         'idtipoedificio': miEdificio.idtipoedificio,
     } for miEdificio in misEdificios]
   
     return jsonify(listaTipoEdificios)
 
+@app.route('/recaudar', methods=['POST'])
+def recaudar():
+    idUsuario = request.args.get('idUsuario')
+    idEdificio = request.args.get('idEdificio')
+    usuario = Usuario.query.get(idUsuario)
+    usuario.plata = usuario.plata+1
+    db.session.commit()
+    return jsonify({'message': 'Plata recaudada correctamente, actualice para poder ver el total de la plata que usted tiene','idEdificio':idEdificio}), 200
 
 
 if __name__ == '__main__':

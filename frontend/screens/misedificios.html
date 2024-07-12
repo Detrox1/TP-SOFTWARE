@@ -8,9 +8,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" src="../stylesheet/misedificios.css">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <title>mis edificios</title>
+    <title>Mis Edificios</title>
 </head>
 <body style="background-color: #212121;">
     <header class="header">
@@ -26,7 +25,7 @@
                 <p id="nombre"></p>
             </div>    
             <div class="logo">
-                <img onclick=menu() src="../img/home/logo.png" alt="logo">
+                <img onclick="menu()" src="../img/home/logo.png" alt="logo">
             </div>
             <div class="info">
                 <div class="dinero">
@@ -39,32 +38,22 @@
             </div>
         </nav>
     </header>
-<body>
     <h1><i class="fa-solid fa-city"></i>Mis edificios<i class="fa-regular fa-building"></i></h1>
     <ul class="edificios-lista">
         <li class="edificio-item">
             <h2><mark>Casas:</mark></h2>
-            <p><h3><u>Tipo de casas</u>...</h3></p>
             <div id="casas" class="container"></div>
         </li>
         <li class="edificio-item2">
             <h2><mark>Locales comerciales:</mark></h2>
-            <p><h3><u> Tipos de locales comerciales</u>...</h3></p>
             <div id="shoppings" class="container"></div>
         </li>
         <li class="edificio-item3">
             <h2><mark>Plazas:</mark></h2>
             <div id="parques" class="container"></div>
         </li>
-        <li class="edificio-item4">
-            <h2><mark>Puentes:</mark></h2>
-        </li>
     </ul>
     <script src="../JS/homescripts.js"></script>
-</body>
-
-
-
 
     <!-- Modal -->
     <div class="modal fade" id="editarPerfilModal" tabindex="-1" role="dialog" aria-labelledby="editarPerfilModalLabel" aria-hidden="true">
@@ -88,158 +77,195 @@
                             <input type="text" class="form-control" id="imagenInput" name="imagen">
                         </div>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-primary" >Guardar Cambios</button>
+                        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
+    
+    <!-- Incluir JavaScript de Bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-  <!-- Incluir JavaScript de Bootstrap -->
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", cargarPagina);
 
-
-<script>
-    document.addEventListener("DOMContentLoaded", cargarPagina);
-    function cargarPagina(event) {
-        event.preventDefault();
-        //traigo el id de los parametros
-        const valores = window.location.search;
-        const urlParams = new URLSearchParams(valores)
-        var id = urlParams.get('id')
-        
-        fetch(`http://127.0.0.1:5000/selectById?id=${id}`)
-            .then(response_received)
-            .then(parse_data)
-            .catch(request_error)
+        function cargarPagina(event) {
+            event.preventDefault();
+            const valores = window.location.search;
+            const urlParams = new URLSearchParams(valores);
+            var id = urlParams.get('id');
+            
+            fetch(`http://127.0.0.1:5000/selectById?id=${id}`)
+                .then(response_received)
+                .then(parse_data)
+                .catch(request_error);
+            
             fetch(`http://127.0.0.1:5000/selectMisEdificios?id=${id}`)
-            .then(response_received)
-            .then(selectMisEdificios)
-            .catch(request_error)
-    }        
-         function request_error(error) {
+                .then(response_received)
+                .then(selectMisEdificios)
+                .catch(request_error);
+        }        
+
+        function request_error(error) {
             console.log(error);
         }
 
-         function response_received(response) {
+        function response_received(response) {
             return response.json();
         }
+
         function parse_data(content) {
-        document.getElementById('nombre').textContent = `Nombre: ${content.nombre}`;
-        const imagen = document.getElementById("imagen");
-        imagen.setAttribute("src", content.imagen)
-        document.getElementById('plata').textContent = `Plata: ${content.plata}`;
+            document.getElementById('nombre').textContent = `Nombre: ${content.nombre}`;
+            const imagen = document.getElementById("imagen");
+            imagen.setAttribute("src", content.imagen);
+            document.getElementById('plata').textContent = `Plata: ${content.plata}`;
         }
+
         function selectMisEdificios(edificios) {
-        const casasContainer = document.getElementById('casas');
-        const parquesContainer = document.getElementById('parques');
-        const shoppingsContainer = document.getElementById('shoppings');
+            const casasContainer = document.getElementById('casas');
+            const parquesContainer = document.getElementById('parques');
+            const shoppingsContainer = document.getElementById('shoppings');
 
-        edificios.forEach(edificio => {
-            const card = document.createElement('div');
-            card.className = 'card';
-            card.innerHTML = `
-                <img src="${edificio.imagen}" alt="${edificio.nombre}">
-                <h3>${edificio.nombre}</h3>
-                <p>Población: ${edificio.poblacion}</p>
-                <button onclick="editarEdificio(${edificio.id})">Editar</button>
-                <button onclick="demolerEdificio(${edificio.id})">Demoler</button>
-            `;
-
-            if (edificio.clase === 'C') {
-                casasContainer.appendChild(card);
-            } else if (edificio.clase === 'P') {
-                parquesContainer.appendChild(card);
-            } else if (edificio.clase === 'S') {
+            edificios.forEach(edificio => {
+                const card = document.createElement('div');
+                card.className = 'card';
                 card.innerHTML = `
-                <img src="${edificio.imagen}" alt="${edificio.nombre}">
-                <h3>${edificio.nombre}</h3>
-                <p>Tiempo de Recaudación: ${edificio.tiemporecaudacion}</p>
-                <p>Plata de Recaudación: ${edificio.platarecaudacion}</p>
-                <button onclick="editarEdificio(${edificio.id})">Editar</button>
-                <button onclick="demolerEdificio(${edificio.id})">Demoler</button>
-                <button onclick="recaudar(${edificio.id})">Recaudar</button>
-                `
-                shoppingsContainer.appendChild(card);
+                    <img src="${edificio.imagen}" alt="${edificio.nombre}" style="width: 150px; height: 150px;">
+                    <h3>${edificio.nombre}</h3>
+                    <p>Población: ${edificio.poblacion}</p>
+                `;
+                
+                
+                card.innerHTML += `
+                    <button onclick="editarEdificio(${edificio.id})">Editar</button>
+                    <button onclick="demolerEdificio(${edificio.id})">Demoler</button>
+                `;
+
+                if (edificio.clase === 'C') {
+                    casasContainer.appendChild(card);
+                } else if (edificio.clase === 'P') {
+                    parquesContainer.appendChild(card);
+                } else if (edificio.clase === 'S') {
+                    card.innerHTML += `
+                    <p>Tiempo de Recaudación: <span class="timer" id="Tiempo-${edificio.id}">${edificio.tiemporecaudacion}</span></p>
+                    <p>Plata de Recaudación: ${edificio.platarecaudacion}</p>
+                    <button onclick="recaudar(${edificio.id})">Recaudar</button>
+                     `;
+                    shoppingsContainer.appendChild(card);
+                    empezarRecaudacion(edificio.id, edificio.tiemporecaudacion);
+                }
+            
+            });
+        }
+
+        function updateProfile(event) {
+            event.preventDefault();
+            const valores = window.location.search;
+            const urlParams = new URLSearchParams(valores);
+            var id = urlParams.get('id');
+
+            const nombre = document.getElementById('nombreInput').value;
+            const imagen = document.getElementById('imagenInput').value;
+            const data = {
+                id: id,
+                nombre: nombre,
+                imagen: imagen
+            };
+
+            fetch('http://127.0.0.1:5000/updateProfile', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response_received)
+            .then(updating)
+            .catch(request_error);
+        }
+
+        function updating(content) {
+            alert(content.message);
+            window.location.reload();
+        }
+
+        function menu() {
+            const valores = window.location.search;
+            const urlParams = new URLSearchParams(valores);
+            var id = urlParams.get('id');
+            window.location.href = `home.html?id=${id}`;
+        }
+
+        function editarEdificio(id) {
+            console.log('Editar edificio', id);
+        }
+
+        function demolerEdificio(id) {
+            console.log('Demoler edificio', id);
+        }
+
+        function recaudar(idEdificio) {
+            const valores = window.location.search;
+            const urlParams = new URLSearchParams(valores);
+            var idUsuario = urlParams.get('id');
+
+            const timerElement = document.getElementById(`Tiempo-${idEdificio}`).value
+            // Verifica si el temporizador ha llegado a cero
+            if (timerElement <= 0) {
+                
+            // Aquí puedes realizar la solicitud fetch para recaudar
+            fetch(`http://127.0.0.1:5000/recaudar?idUsuario=${idUsuario}&idEdificio=${idEdificio}`,{
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+            }})
+            .then(response_received)
+            .then(recaudado)
+            .catch(request_error)
+   
+            } else {
+                alert("Todavía no es tiempo para recaudar");
             }
-        });
-    }
+        }
 
 
+        function empezarRecaudacion(id, tiempo) {
+            const timerElement = document.getElementById(`Tiempo-${id}`);
+            timerElement.valueTotal = tiempo;
+            let totalTiempo = convertirFecha(tiempo);
+            
 
+            //el set interval funciona pasando una funcion como primera parte y luego pasando la cantidad de milisegundos por la cual yo quiero que se ejecute
+            const interval = setInterval(() => {
+                if (totalTiempo <= 0) {
+                    clearInterval(interval);
+                    timerElement.innerText = 'Listo para recaudar';
+                    timerElement.value = totalTiempo;
+                } else {
+                    totalTiempo -= 1;
+                    timerElement.innerText = totalTiempo;
+                    timerElement.value = totalTiempo;
+                }
+            }, 1000);
+        }
 
+        function convertirFecha(time) {
+            const parts = time.split(':');
+            const hours = parseInt(parts[0], 10);
+            const minutes = parseInt(parts[1], 10);
+            const seconds = parseInt(parts[2], 10);
+            return (hours * 3600) + (minutes * 60) + seconds;
+        }
+        function recaudado(content) {
+            alert(content.message)
+            const tiempoRecaudacion = document.getElementById(`Tiempo-${content.idEdificio}`).valueTotal
+            empezarRecaudacion(content.idEdificio, tiempoRecaudacion);
 
-    function updateProfile(event) {
-    event.preventDefault();
-    
-   
-    const valores = window.location.search;
-    const urlParams = new URLSearchParams(valores)
-    var id = urlParams.get('id')
+        }
 
-
-    const nombre = document.getElementById('nombreInput').value;
-    const imagen = document.getElementById('imagenInput').value;
-    const data = {
-        id: id,
-        nombre: nombre,
-        imagen: imagen
-    };
-    console.log('Nombre:', data.nombre);
-    console.log('Imagen:', imagen);
-
-
-    
-    
-    fetch('http://127.0.0.1:5000/updateProfile', {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)  
-    })
-    .then(response_received)
-    .then(updating)
-    .catch(request_error);
-}
-   function request_error(error) {
-      console.log(error);
-  }
-
-function response_received(response) {
-  return response.json();
- }
-
-  function updating(content) {
-   
-        alert(content.message)
-   
-    window.location.reload();
-  }
-  function menu() {
-    //traigo el id de los parametros
-    const valores = window.location.search;
-    const urlParams = new URLSearchParams(valores)
-    var id = urlParams.get('id')
-    window.location.href = `home.html?id=${id}`;
-    
-  }
-  function editarEdificio(id) {
-    // Lógica para editar el edificio
-    console.log('Editar edificio', id);
-}
-
-function demolerEdificio(id) {
-    // Lógica para demoler el edificio
-    console.log('Demoler edificio', id);
-}
-
-function recaudar(id) {
-    // Lógica para recaudar del edificio
-    console.log('Recaudar de edificio', id);
-}
-        
-</script>
+    </script>
+</body>
 </html>
