@@ -119,9 +119,13 @@ def comprarEdificio():
     usuario.plata=usuario.plata-edificio.precio
     #creo en la tabla misedificios una fila con el nuevo edificio del usuario
     misEdificios = MisEdificios.query.all()
-    misEdificios_list = [{'id': miEdificio.id} for miEdificio in misEdificios]
-    idMisEdificios=len(misEdificios_list)+1
-    miEdificio = MisEdificios(id=idMisEdificios, nombre=edificio.nombre, imagen=edificio.imagen,clase=edificio.clase,poblacion=edificio.poblacion,descripcion=edificio.descripcion,tiemporecaudacion=edificio.tiemporecaudacion,platarecaudacion=edificio.platarecaudacion,idusuario=idUsuario,idtipoedificio=idEdificio)
+    max_id = 0
+    for aux in misEdificios:
+        if aux.id > max_id:
+            max_id = aux.id
+    max_id=max_id+1 
+  
+    miEdificio = MisEdificios(id=max_id, nombre=edificio.nombre, imagen=edificio.imagen,clase=edificio.clase,poblacion=edificio.poblacion,descripcion=edificio.descripcion,tiemporecaudacion=edificio.tiemporecaudacion,platarecaudacion=edificio.platarecaudacion,idusuario=idUsuario,idtipoedificio=idEdificio)
     db.session.add(miEdificio)
     db.session.commit()
 
@@ -159,9 +163,43 @@ def recaudar():
     idUsuario = request.args.get('idUsuario')
     idEdificio = request.args.get('idEdificio')
     usuario = Usuario.query.get(idUsuario)
-    usuario.plata = usuario.plata+1
+    edificio = MisEdificios.query.get(idEdificio)
+    usuario.plata = usuario.plata+edificio.platarecaudacion
     db.session.commit()
     return jsonify({'message': 'Plata recaudada correctamente, actualice para poder ver el total de la plata que usted tiene','idEdificio':idEdificio}), 200
+
+
+@app.route('/deleteMisEdificiosById', methods=['DELETE'])
+def deleteMisEdificiosById():
+    idEdificio = request.args.get('idEdificio')
+    edificio = MisEdificios.query.get(idEdificio)
+    db.session.delete(edificio)
+    db.session.commit()
+    return jsonify({'message': 'El edificio fue eliminado'}), 200
+
+@app.route('/updateMiEdificio', methods=['PUT'])
+def updateMiEdificio():
+    
+    data = request.get_json()
+    id = data.get('id')
+    nombre = data.get('nombre')
+    imagen = data.get('imagen')
+    descripcion = data.get('descripcion')
+    
+    miEdificio = MisEdificios.query.get(id)
+    if miEdificio:
+        miEdificio.nombre = nombre
+        miEdificio.imagen = imagen
+        miEdificio.descripcion = descripcion
+        db.session.commit()
+        return jsonify({'message': 'Edificio actualizado correctamente'}), 200
+    else:
+        return jsonify({'message': 'Edificio no encontrado'}), 404
+
+
+
+
+
 
 
 if __name__ == '__main__':

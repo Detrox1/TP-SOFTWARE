@@ -83,6 +83,38 @@
             </div>
         </div>
     </div>
+    <!-- Modal para editar edificio -->
+<div class="modal fade" id="editarEdificioModal" tabindex="-1" role="dialog" aria-labelledby="editarEdificioModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editarEdificioModalLabel">Editar Edificio</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="formularioEditarEdificio" onsubmit="editarEdificio(event)">
+                    <div class="form-group">
+                        <label for="nombreEdificio">Nombre</label>
+                        <input type="text" class="form-control" id="nombreEdificio" name="nombreEdificio">
+                    </div>
+                    <div class="form-group">
+                        <label for="descripcionEdificio">Descripción</label>
+                        <textarea class="form-control" id="descripcionEdificio" name="descripcionEdificio" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="imagenEdificio">Imagen (URL)</label>
+                        <input type="text" class="form-control" id="imagenEdificio" name="imagenEdificio">
+                    </div>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
     
     <!-- Incluir JavaScript de Bootstrap -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
@@ -91,7 +123,7 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", cargarPagina);
-
+        let idEdificio
         function cargarPagina(event) {
             event.preventDefault();
             const valores = window.location.search;
@@ -140,7 +172,7 @@
                 
                 
                 card.innerHTML += `
-                    <button onclick="editarEdificio(${edificio.id})">Editar</button>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editarEdificioModal" onclick="cargarDatosEdificio(${edificio.id}, '${edificio.nombre}', '${edificio.descripcion}', '${edificio.imagen}')">Editar</button>
                     <button onclick="demolerEdificio(${edificio.id})">Demoler</button>
                 `;
 
@@ -199,12 +231,55 @@
             window.location.href = `home.html?id=${id}`;
         }
 
-        function editarEdificio(id) {
-            console.log('Editar edificio', id);
+        function editarEdificio(event) {
+            event.preventDefault();
+            const nombre = document.getElementById('nombreEdificio').value;
+            const descripcion = document.getElementById('descripcionEdificio').value;
+            const imagen = document.getElementById('imagenEdificio').value;
+            
+            const data = {
+                id: idEdificio,
+                nombre: nombre,
+                descripcion: descripcion,
+                imagen: imagen
+            };
+            fetch('http://127.0.0.1:5000/updateMiEdificio', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response_received)
+            .then(edificioEditado)
+            .catch(request_error);
+        }
+        function edificioEditado(content) {
+            alert(content.message)
+            window.location.reload();
+        }
+        function cargarDatosEdificio(id, nombre, descripcion, imagen) {
+            document.getElementById('nombreEdificio').value = nombre;
+            document.getElementById('descripcionEdificio').value = descripcion;
+            document.getElementById('imagenEdificio').value = imagen;
+            idEdificio = id;
         }
 
-        function demolerEdificio(id) {
-            console.log('Demoler edificio', id);
+
+        function demolerEdificio(idEdificio) {
+            fetch(`http://127.0.0.1:5000/deleteMisEdificiosById?idEdificio=${idEdificio}`,{
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+            }})
+            .then(response_received)
+            .then(demolicion)
+            .catch(request_error)
+        }
+        function demolicion(content) {
+            alert(content.message)
+            window.location.reload();
+
         }
 
         function recaudar(idEdificio) {
@@ -213,10 +288,8 @@
             var idUsuario = urlParams.get('id');
 
             const timerElement = document.getElementById(`Tiempo-${idEdificio}`).value
-            // Verifica si el temporizador ha llegado a cero
+
             if (timerElement <= 0) {
-                
-            // Aquí puedes realizar la solicitud fetch para recaudar
             fetch(`http://127.0.0.1:5000/recaudar?idUsuario=${idUsuario}&idEdificio=${idEdificio}`,{
                 method: 'POST',
                 headers: {

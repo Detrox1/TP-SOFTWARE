@@ -12,7 +12,7 @@ class Usuario(db.Model):
     nombre = db.Column(db.String(100), nullable=False)
     contraseña = db.Column(db.String(100), nullable=False)
     imagen = db.Column(db.String(100))
-    plata = db.Column(db.Integer, default=0)  
+    plata = db.Column(db.Integer, default=50)  
 
 
 
