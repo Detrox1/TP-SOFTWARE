@@ -24,10 +24,13 @@
                 </div>
                 <p id="nombre"></p>
             </div>    
-            <div class="logo">
-                <img onclick="menu()" src="../img/home/logo.png" alt="logo">
+            <div class="dinero">
+                <p onclick="menu()" id="nombreciudad" >Tu ciudad </p>
             </div>
             <div class="info">
+                <div class="dinero">
+                    <p id="totPoblacion"></p>
+                </div>
                 <div class="dinero">
                     <p id="plata"></p>
                 </div>
@@ -75,6 +78,10 @@
                         <div class="form-group">
                             <label for="imagen" class="text-white">Imagen (URL)</label>
                             <input type="text" class="form-control" id="imagenInput" name="imagen">
+                        </div>
+                        <div class="form-group">
+                            <label for="imagen" class="text-white">Nombre ciudad</label>
+                            <input type="text" class="form-control" id="nombreciudadInput" name="imagen">
                         </div>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                         <button type="submit" class="btn btn-primary">Guardar Cambios</button>
@@ -154,14 +161,18 @@
             const imagen = document.getElementById("imagen");
             imagen.setAttribute("src", content.imagen);
             document.getElementById('plata').textContent = `Plata: ${content.plata}`;
+            console.log(content.nombreciudad)
+            document.getElementById('nombreciudad').textContent = content.nombreciudad
         }
 
         function selectMisEdificios(edificios) {
             const casasContainer = document.getElementById('casas');
             const parquesContainer = document.getElementById('parques');
             const shoppingsContainer = document.getElementById('shoppings');
+            let totPoblacion=0
 
             edificios.forEach(edificio => {
+                totPoblacion=totPoblacion+edificio.poblacion
                 const card = document.createElement('div');
                 card.className = 'card';
                 card.innerHTML = `
@@ -191,6 +202,7 @@
                 }
             
             });
+            document.getElementById('totPoblacion').textContent=`Poblacion de tu ciudad: ${totPoblacion}`;
         }
 
         function updateProfile(event) {
@@ -201,10 +213,13 @@
 
             const nombre = document.getElementById('nombreInput').value;
             const imagen = document.getElementById('imagenInput').value;
+            const nombreCiudad = document.getElementById('nombreciudadInput').value;
+            console.log(nombreCiudad)
             const data = {
                 id: id,
                 nombre: nombre,
-                imagen: imagen
+                imagen: imagen,
+                nombreCiudad:nombreCiudad
             };
 
             fetch('http://127.0.0.1:5000/updateProfile', {
@@ -336,7 +351,7 @@
             alert(content.message)
             const tiempoRecaudacion = document.getElementById(`Tiempo-${content.idEdificio}`).valueTotal
             empezarRecaudacion(content.idEdificio, tiempoRecaudacion);
-
+            document.getElementById('plata').textContent = `Plata: ${content.plata}`;
         }
 
     </script>

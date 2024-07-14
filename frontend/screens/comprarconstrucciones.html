@@ -20,8 +20,8 @@
                 </div>
                 <p id="nombre"></p>
             </div>    
-            <div onclick=menu() class="logo">
-                <img src="../img/home/logo.png" alt="logo">
+            <div class="dinero">
+                <p onclick="menu()" id="nombreciudad" >Tu ciudad </p>
             </div>
             <div class="info">
                 <div class="dinero">
@@ -81,13 +81,18 @@
                             <label for="imagen" class="text-white">Imagen (URL)</label>
                             <input type="text" class="form-control" id="imagenInput" name="imagen">
                         </div>
+                        <div class="form-group">
+                            <label for="imagen" class="text-white">Nombre ciudad</label>
+                            <input type="text" class="form-control" id="nombreciudadInput" name="imagen">
+                        </div>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-primary" >Guardar Cambios</button>
+                        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
+
 
 
 
@@ -130,43 +135,38 @@
         imagen.setAttribute("src", content.imagen)
         document.getElementById('plata').textContent = `Plata: ${content.plata}`;
         document.getElementById('plata').value = content.plata
-
+        document.getElementById('nombreciudad').textContent = content.nombreciudad
         }
     
 
-    function updateProfile(event) {
-    event.preventDefault();
-    
-   
-    const valores = window.location.search;
-    const urlParams = new URLSearchParams(valores)
-    var id = urlParams.get('id')
+        function updateProfile(event) {
+            event.preventDefault();
+            const valores = window.location.search;
+            const urlParams = new URLSearchParams(valores);
+            var id = urlParams.get('id');
 
+            const nombre = document.getElementById('nombreInput').value;
+            const imagen = document.getElementById('imagenInput').value;
+            const nombreCiudad = document.getElementById('nombreciudadInput').value;
+            console.log(nombreCiudad)
+            const data = {
+                id: id,
+                nombre: nombre,
+                imagen: imagen,
+                nombreCiudad:nombreCiudad
+            };
 
-    const nombre = document.getElementById('nombreInput').value;
-    const imagen = document.getElementById('imagenInput').value;
-    const data = {
-        id: id,
-        nombre: nombre,
-        imagen: imagen
-    };
-    console.log('Nombre:', data.nombre);
-    console.log('Imagen:', imagen);
-
-
-    
-    
-    fetch('http://127.0.0.1:5000/updateProfile', {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)  
-    })
-    .then(response_received)
-    .then(updating)
-    .catch(request_error);
-}
+            fetch('http://127.0.0.1:5000/updateProfile', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response_received)
+            .then(updating)
+            .catch(request_error);
+        }
   function updating(content) {
    
         alert(content.message)

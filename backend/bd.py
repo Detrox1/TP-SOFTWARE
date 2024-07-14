@@ -13,6 +13,7 @@ class Usuario(db.Model):
     contraseña = db.Column(db.String(100), nullable=False)
     imagen = db.Column(db.String(100))
     plata = db.Column(db.Integer, default=50)  
+    nombreciudad = db.Column(db.String(100))
 
 
 

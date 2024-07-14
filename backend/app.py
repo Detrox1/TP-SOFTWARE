@@ -59,14 +59,17 @@ def selectById():
     id = request.args.get('id')
     
     usuario = Usuario.query.get(id)
-    
+    print(usuario.nombreciudad)
     return jsonify({
                 'id': usuario.id,
                 'nombre': usuario.nombre,
                 'contraseña': usuario.contraseña,
                 'imagen': usuario.imagen,
-                'plata': usuario.plata
+                'plata': usuario.plata,
+                'nombreciudad': usuario.nombreciudad
             })
+
+            
 @app.route('/updateProfile', methods=['PUT'])
 def updateProfile():
     
@@ -74,7 +77,7 @@ def updateProfile():
     id = data.get('id')
     nombre = data.get('nombre')
     imagen = data.get('imagen')
-    
+    nombreCiudad = data.get('nombreCiudad')
     # Verificar si existe otro usuario con el mismo nombre
     existing_user = Usuario.query.filter(Usuario.nombre == nombre).filter(Usuario.id != id).first()
     if existing_user:
@@ -85,6 +88,7 @@ def updateProfile():
     if usuario:
         usuario.nombre = nombre
         usuario.imagen = imagen
+        usuario.nombreciudad=nombreCiudad
         db.session.commit()
         return jsonify({'message': 'Perfil actualizado exitosamente'}), 200
     else:
@@ -166,7 +170,7 @@ def recaudar():
     edificio = MisEdificios.query.get(idEdificio)
     usuario.plata = usuario.plata+edificio.platarecaudacion
     db.session.commit()
-    return jsonify({'message': 'Plata recaudada correctamente, actualice para poder ver el total de la plata que usted tiene','idEdificio':idEdificio}), 200
+    return jsonify({'message': 'Plata recaudada correctamente, actualice para poder ver el total de la plata que usted tiene','idEdificio':idEdificio,'plata':usuario.plata}), 200
 
 
 @app.route('/deleteMisEdificiosById', methods=['DELETE'])
