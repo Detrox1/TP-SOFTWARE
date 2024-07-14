@@ -99,7 +99,7 @@ body{
     margin: 10px;
 }
 
-/*configuracion de los 3 cuadros*/
+/*configuracion de los 2 cuadros*/
 
 .medio{
     display: flex;
@@ -114,8 +114,8 @@ body{
     background-color: lightblue;
     margin-right: 20px;
     border-radius: 10px;
-    height: 80vh;
-    width: 55%;
+    height: 707px;
+    width: 50%;
     position: relative;
     overflow: hidden;
 }
@@ -147,7 +147,7 @@ body{
     visibility:visible;
 }
 
-/*es el contendedor de construir y comprar*/
+/*es el contendedor de comprar*/
 .medio .colum{
     display: flex;
     flex-direction: column;
@@ -155,11 +155,11 @@ body{
     flex: 1;
 }
 
-/*estilos de construit y comprar*/
+/*estilos de comprar*/
 .medio .colum .accion{
     background-color: lightgreen;
     border-radius: 5px;
-    height: 251px;
+    height: 707px;
     position: relative;
     overflow: hidden;
 }

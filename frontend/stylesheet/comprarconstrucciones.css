@@ -117,61 +117,7 @@ body{
     
 }
 
-#nuestros-programas .carta{
-    background-position: center center;
-    background-size: cover;
-    padding: 60px;
-    margin: 30px;
-    border-radius: 15px;
-    color: aliceblue;
-    display: flex;
-    flex-direction: row;
-    color:goldenrod;
-    text-shadow: 
-                -1px -1px 0 #000,  
-                 1px -1px 0 #000,
-                -1px  1px 0 #000,
-                 1px  1px 0 #000;
-}
 
-.carta:first-child{
-    background-image: linear-gradient(
-        0deg,
-        rgba(0,0,0,0.5),
-        rgba(0,0,0,0.5)
-    )
-    ,url(../img/barrios.webp);
-
-}
-
-.carta:nth-child(2){
-    background-image: linear-gradient(
-        0deg,
-        rgba(0,0,0,0.5),
-        rgba(0,0,0,0.5)
-    )
-    ,url(../img/localescomerciales.jpg);
-}
-
-.carta:nth-child(3){
-    background-image: linear-gradient(
-        0deg,
-        rgba(0,0,0,0.5),
-        rgba(0,0,0,0.5)
-    )
-    ,url("../img/parques.jpg");
-
-}
-
-.carta:nth-child(4){
-    background-image: linear-gradient(
-        0deg,
-        rgba(0,0,0,0.5),
-        rgba(0,0,0,0.5)
-    )
-    ,url("../img/puentes.png");
-
-}
 
 
 
