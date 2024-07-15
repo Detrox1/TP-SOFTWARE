@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;700&display=swap');
+
 *{
     box-sizing: border-box;
     padding: 0%;
@@ -103,18 +105,68 @@ body{
     margin: 10px;
 }
 
+.cityname{
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.5em;
+    color: #4A90E2;
+    text-align: center;
+    margin-top: 20%;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    animation: tituloAnimacion 2s ease-in-out infinite;
+    background: linear-gradient(to right, #4A90E2, #9013FE);
+    -webkit-background-clip: text;
+    color: transparent;
+    margin: 0; 
+    padding: 0.3em 0.6em; 
+}
+
+.cityname::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    bottom: -3px;
+    left: 0;
+    background: #4A90E2;
+    animation: lineaAnimacion 2s ease-in-out infinite;
+}
+
+@keyframes tituloAnimacion {
+    0%, 100% {
+        letter-spacing: 2px;
+        text-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    50% {
+        letter-spacing: 4px;
+        text-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    }
+}
+
+@keyframes lineaAnimacion {
+    0%, 100% {
+        transform: scaleX(1);
+    }
+    50% {
+        transform: scaleX(0.7);
+    }
+}
+
 .contenedor{
-    background-color: rgba(255, 255, 255, 0.8); 
     padding: 10px;
     margin: 20px;
     border-radius: 10px;
     text-align: center;
-    font-family: "Montserrat", sans-serif;
     font-optical-sizing: auto;
     font-weight: 10000;
-    font-style: normal;
-    color: coral;
-    
+    font-family: 'Lora', serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.8); 
+    color: midnightblue;
 }
 
 
