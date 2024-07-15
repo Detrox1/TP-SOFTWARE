@@ -153,12 +153,18 @@
         }
 
         function parse_data(content) {
-            document.getElementById('nombre').textContent = `Nombre: ${content.nombre}`;
-            const imagen = document.getElementById("imagen");
-            imagen.setAttribute("src", content.imagen);
-            document.getElementById('plata').textContent = `Plata: ${content.plata}`;
-            console.log(content.nombreciudad)
+            document.getElementById('nombre').textContent = `Nombre: ${content.nombre}`
+            const imagen = document.getElementById("imagen")
+            imagen.setAttribute("src", content.imagen)
+            document.getElementById('plata').textContent = `Plata: ${content.plata}`
+            document.getElementById('plata').value = content.plata
             document.getElementById('nombreciudad').textContent = content.nombreciudad
+
+            document.getElementById('nombreInput').value=content.nombre
+            document.getElementById('imagenInput').value=content.imagen
+            document.getElementById('nombreciudadInput').value=content.nombreciudad
+
+            
         }
 
         function selectMisEdificios(edificios) {
@@ -174,17 +180,21 @@
                 card.innerHTML = `
                     <img src="${edificio.imagen}" alt="${edificio.nombre}" style="width: 150px; height: 150px;">
                     <h3>${edificio.nombre}</h3>
-                    <p>Población: ${edificio.poblacion}</p>
+                    
                 `;
                 
                 
                 card.innerHTML += `
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editarEdificioModal" onclick="cargarDatosEdificio(${edificio.id}, '${edificio.nombre}', '${edificio.descripcion}', '${edificio.imagen}')">Editar</button>
                     <button onclick="demolerEdificio(${edificio.id})">Demoler</button>
+                    <button onclick="mejorarEdificio(${edificio.id},${edificio.valor})">Mejorar (valor de la mejora ${edificio.valor})</button>
                 `;
 
                 if (edificio.clase === 'C') {
                     casasContainer.appendChild(card);
+                card.innerHTML += `
+                <p>Población: ${edificio.poblacion}</p>
+                `;
                 } else if (edificio.clase === 'P') {
                     parquesContainer.appendChild(card);
                 } else if (edificio.clase === 'S') {
@@ -253,7 +263,7 @@
                 nombre: nombre,
                 descripcion: descripcion,
                 imagen: imagen
-            };
+            }
             fetch('http://127.0.0.1:5000/updateMiEdificio', {
                 method: 'PUT',
                 headers: {
@@ -302,7 +312,7 @@
 
             if (timerElement <= 0) {
             fetch(`http://127.0.0.1:5000/recaudar?idUsuario=${idUsuario}&idEdificio=${idEdificio}`,{
-                method: 'POST',
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
             }})
@@ -348,6 +358,38 @@
             const tiempoRecaudacion = document.getElementById(`Tiempo-${content.idEdificio}`).valueTotal
             empezarRecaudacion(content.idEdificio, tiempoRecaudacion);
             document.getElementById('plata').textContent = `Plata: ${content.plata}`;
+            document.getElementById('plata').value = content.plata
+        }
+
+
+        function mejorarEdificio(idEdificio, valorEdificio) {
+        plata=  document.getElementById('plata').value 
+        const valores = window.location.search
+        const urlParams = new URLSearchParams(valores)
+        var idUsuario = urlParams.get('id')
+        const data = {
+                idUsuario: idUsuario,
+                idEdificio: idEdificio,
+            }
+        if(plata>=valorEdificio){
+            fetch('http://127.0.0.1:5000/mejorarEdificio', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response_received)
+            .then(edificioMejorado)
+            .catch(request_error);
+        }else{
+            alert("Necesitas mas plata para mejorar este edificio")
+        }
+
+        }
+        function edificioMejorado(content) {
+            alert(content.message)
+            window.location.reload();
         }
 
     </script>

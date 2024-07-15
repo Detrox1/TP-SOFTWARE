@@ -129,7 +129,7 @@ def comprarEdificio():
             max_id = aux.id
     max_id=max_id+1 
   
-    miEdificio = MisEdificios(id=max_id, nombre=edificio.nombre, imagen=edificio.imagen,clase=edificio.clase,poblacion=edificio.poblacion,descripcion=edificio.descripcion,tiemporecaudacion=edificio.tiemporecaudacion,platarecaudacion=edificio.platarecaudacion,idusuario=idUsuario,idtipoedificio=idEdificio)
+    miEdificio = MisEdificios(id=max_id, nombre=edificio.nombre, imagen=edificio.imagen,clase=edificio.clase,poblacion=edificio.poblacion,descripcion=edificio.descripcion,tiemporecaudacion=edificio.tiemporecaudacion,platarecaudacion=edificio.platarecaudacion,valor=edificio.precio,idusuario=idUsuario,idtipoedificio=idEdificio)
     db.session.add(miEdificio)
     db.session.commit()
 
@@ -156,13 +156,14 @@ def selectMisEdificios():
         'poblacion': miEdificio.poblacion,
         'descripcion': miEdificio.descripcion,
         'tiemporecaudacion': format_timedelta(miEdificio.tiemporecaudacion),
+        'valor': miEdificio.valor,
         'platarecaudacion': miEdificio.platarecaudacion,
         'idtipoedificio': miEdificio.idtipoedificio,
     } for miEdificio in misEdificios]
   
     return jsonify(listaTipoEdificios)
 
-@app.route('/recaudar', methods=['POST'])
+@app.route('/recaudar', methods=['PUT'])
 def recaudar():
     idUsuario = request.args.get('idUsuario')
     idEdificio = request.args.get('idEdificio')
@@ -170,7 +171,7 @@ def recaudar():
     edificio = MisEdificios.query.get(idEdificio)
     usuario.plata = usuario.plata+edificio.platarecaudacion
     db.session.commit()
-    return jsonify({'message': 'Plata recaudada correctamente, actualice para poder ver el total de la plata que usted tiene','idEdificio':idEdificio,'plata':usuario.plata}), 200
+    return jsonify({'message': 'Plata recaudada correctamente','idEdificio':idEdificio,'plata':usuario.plata}), 200
 
 
 @app.route('/deleteMisEdificiosById', methods=['DELETE'])
@@ -200,8 +201,25 @@ def updateMiEdificio():
     else:
         return jsonify({'message': 'Edificio no encontrado'}), 404
 
+@app.route('/mejorarEdificio', methods=['PUT'])
+def mejorarEdificio():
+    
+    data = request.get_json()
+    idUsuario = data.get('idUsuario')
+    idEdificio = data.get('idEdificio')
+    usuario = Usuario.query.get(idUsuario)
+    miEdificio = MisEdificios.query.get(idEdificio)
+    usuario.plata=usuario.plata-miEdificio.valor
+    miEdificio.valor=miEdificio.valor*2
+    if(miEdificio.clase=='C'):
+        miEdificio.poblacion=miEdificio.poblacion*2
+    
+    elif(miEdificio.clase=='S'):
+        miEdificio.platarecaudacion=miEdificio.platarecaudacion*2
 
+    db.session.commit()
 
+    return jsonify({'message': 'Edificio actualizado correctamente'}), 200
 
 
 

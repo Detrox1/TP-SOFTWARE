@@ -120,6 +120,10 @@
         imagen.setAttribute("src", content.imagen)
         document.getElementById('plata').textContent = `Plata: ${content.plata}`;
         document.getElementById('nombreciudad').textContent = content.nombreciudad
+
+        document.getElementById('nombreInput').value=content.nombre
+        document.getElementById('imagenInput').value=content.imagen
+        document.getElementById('nombreciudadInput').value=content.nombreciudad
         }
         
         function updateProfile(event) {

@@ -132,6 +132,10 @@
         document.getElementById('plata').textContent = `Plata: ${content.plata}`;
         document.getElementById('plata').value = content.plata
         document.getElementById('nombreciudad').textContent = content.nombreciudad
+
+        document.getElementById('nombreInput').value=content.nombre
+        document.getElementById('imagenInput').value=content.imagen
+        document.getElementById('nombreciudadInput').value=content.nombreciudad
         }
     
 
@@ -277,7 +281,7 @@ function response_received(response) {
 
 }
 function menu() {
-    //traigo el id de los parametros
+   
     const valores = window.location.search;
     const urlParams = new URLSearchParams(valores)
     var id = urlParams.get('id')

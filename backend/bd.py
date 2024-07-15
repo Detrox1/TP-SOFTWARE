@@ -13,7 +13,7 @@ class Usuario(db.Model):
     contraseña = db.Column(db.String(100), nullable=False)
     imagen = db.Column(db.String(100))
     plata = db.Column(db.Integer, default=50)  
-    nombreciudad = db.Column(db.String(100))
+    nombreciudad = db.Column(db.String(100), default="Tu ciudad")
 
 
 
@@ -42,6 +42,7 @@ class MisEdificios(db.Model):
     descripcion = db.Column(db.Text,nullable=False)
     tiemporecaudacion = db.Column(db.Interval, nullable=False)
     platarecaudacion = db.Column(db.Integer, nullable=False)
+    valor = db.Column(db.Integer)
     idusuario = db.Column(db.Integer, ForeignKey('usuarios.id'), nullable=False)
     idtipoedificio = db.Column(db.Integer, ForeignKey('tiposedificios.id'), nullable=False)
 
